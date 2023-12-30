@@ -5,7 +5,9 @@ const helmet = require("helmet");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 require("dotenv").config();
-const appRoute = require("./router/user.js");
+
+const userRoute = require("./router/users");
+const authRoute = require("./router/auth");
 
 async function connectToDatabase() {
   try {
@@ -24,6 +26,10 @@ const PORT = process.env.PORT || 5050;
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
+
+app.use("/api/user", userRoute);
+
+app.use("/api/auth", authRoute);
 
 app.listen(PORT, () => {
   console.log("sever started");
