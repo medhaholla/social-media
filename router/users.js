@@ -4,7 +4,7 @@ const user = require("../models/user");
 
 //update user
 router.post("/:id", async (req, res) => {
-  if (req.body.userId === req.params.id || req.user.isAdmin) {
+  if (req.body.userId === req.params.id || req.body.isAdmin) {
     if (req.body.password) {
       try {
         const salt = await bcrypt.genSalt(10);
@@ -23,6 +23,19 @@ router.post("/:id", async (req, res) => {
     }
   } else {
     return res.status(401).json("You can update only your account");
+  }
+});
+// delete user
+router.delete("/:id", async (req, res) => {
+  if (req.params.id === req.body.userId || req.body.isAdmin) {
+    try {
+      await user.findByIdAndDelete(req.params.id);
+      res.status(200).json("Account has been deleted");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(403).json("You can delete only your account");
   }
 });
 
