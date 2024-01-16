@@ -42,4 +42,24 @@ router.put("/:id", async (req, res) => {
 
 //delete a post
 
+router.delete("/:id", async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  try {
+    if (post.userId == req.body.userId) {
+      await post.deleteOne();
+      res.status(200).send({
+        status: "Sucessfull",
+        message: "You sucessfully deleted the post",
+      });
+    } else {
+      res.status(401).send({
+        status: "failure",
+        message: "you are not authorized",
+      });
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
