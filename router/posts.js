@@ -20,6 +20,26 @@ router.post("/", async (req, res) => {
 });
 //update a post
 
+router.put("/:id", async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  try {
+    if (post.userId === req.body.userId) {
+      await post.updateOne({ $set: req.body });
+      res.status(200).send({
+        status: "success",
+        message: "article has been updated",
+      });
+    } else {
+      res.status(401).send({
+        status: "failure",
+        message: "you are not authorized",
+      });
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //delete a post
 
 module.exports = router;
