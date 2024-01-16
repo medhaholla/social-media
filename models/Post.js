@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+// const Comment = require("Comment");
 
 const PostSchema = new mongoose.Schema(
   {
@@ -20,6 +21,7 @@ const PostSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   },
 
   { timestamps: true }

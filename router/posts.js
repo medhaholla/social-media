@@ -93,4 +93,14 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//get all post
+router.get("/:id/allPost", async (req, res) => {
+  try {
+    const posts = await Post.where({ userId: req.params.id });
+    return res.status(200).json({ posts });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

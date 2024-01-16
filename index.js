@@ -9,6 +9,7 @@ require("dotenv").config();
 const userRoute = require("./router/users");
 const authRoute = require("./router/auth");
 const postRoute = require("./router/posts");
+const commentroute = require("./router/commentRoute");
 
 async function connectToDatabase() {
   try {
@@ -33,6 +34,8 @@ app.use("/api/user", userRoute);
 app.use("/api/auth", authRoute);
 
 app.use("/api/post", postRoute);
+
+app.use("/api/comment", commentroute);
 
 app.listen(PORT, () => {
   console.log("sever started");
