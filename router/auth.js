@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const user = require("../models/user");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
+const messageService = require("../messageService");
+router.use(messageService);
 
 //Register user
 router.post("/register", async (req, res) => {
@@ -18,6 +21,24 @@ router.post("/register", async (req, res) => {
 
     // save new user
     const u = await newUser.save();
+
+    async function sendData() {
+      const webhookEndpoint = "http://localhost:5051/webhook";
+      const webhookData = {
+        username: u.username,
+        email: u.email,
+      };
+
+      try {
+        console.log("I am here");
+        await axios.post(webhookEndpoint, webhookData);
+        console.log("webhook data sent sucessfully");
+      } catch (error) {
+        console.log("error occured " + error);
+      }
+    }
+    sendData();
+
     res.status(200).send(u);
   } catch (err) {
     console.log(err);
